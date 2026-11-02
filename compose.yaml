@@ -10,3 +10,18 @@ services:
       - 3000:3000
     volumes:
       - .:/app
+
+  mongo:
+    image: mongo:7
+    container_name: next-16-netflix-clone-mongodb-dev
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data_dev:/data/db
+
+volumes:
+  mongo_data_dev:
