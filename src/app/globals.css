@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-zinc-900 h-full overflow-x-hidden;
+  @apply bg-zinc-900 h-full overflow-x-hidden text-white;
 }
 
 #__next{
