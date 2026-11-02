@@ -1,6 +1,10 @@
+"use client"
 import { Input } from "@/components/Input";
+import React, { useState } from "react";
 
 export default function Page (){
+  const [email, setEmail] = useState<string>('')
+
   return(
     <>
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
@@ -16,7 +20,7 @@ export default function Page (){
             <div className="flex flex-col gap-4">
               <Input
                 id="email"
-                onChange={() => {}}
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setEmail(ev.target.value)}
                 value=""
                 type="email"
                 label="Email"
