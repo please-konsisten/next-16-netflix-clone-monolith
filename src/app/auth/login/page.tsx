@@ -4,6 +4,8 @@ import React, { useState } from "react";
 
 export default function Page (){
   const [email, setEmail] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
   return(
     <>
@@ -19,11 +21,24 @@ export default function Page (){
             </h2>
             <div className="flex flex-col gap-4">
               <Input
+                id="name"
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setName(ev.target.value)}
+                value=""
+                label="Name"
+              />
+              <Input
                 id="email"
                 onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setEmail(ev.target.value)}
                 value=""
                 type="email"
                 label="Email"
+              />
+              <Input
+                id="password"
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) => setPassword(ev.target.value)}
+                value=""
+                type="password"
+                label="Password"
               />
             </div>
           </div>
