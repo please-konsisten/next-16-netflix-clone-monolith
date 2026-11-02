@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+    container_name: next-16-netflix-clone-monolith-dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
