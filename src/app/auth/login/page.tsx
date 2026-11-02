@@ -1,3 +1,5 @@
+import { Input } from "@/components/Input";
+
 export default function Page (){
   return(
     <>
@@ -12,7 +14,13 @@ export default function Page (){
               Sign in
             </h2>
             <div className="flex flex-col gap-4">
-
+              <Input
+                id="email"
+                onChange={() => {}}
+                value=""
+                type="email"
+                label="Email"
+              />
             </div>
           </div>
         </div>
