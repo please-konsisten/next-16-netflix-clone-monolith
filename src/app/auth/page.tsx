@@ -10,9 +10,9 @@ export default function Page (){
 
   const [variant, setVariant] = useState("login")
 
-  const toggleVariant = useCallback(() => {
+  const toggleVariant = () => {
     setVariant((currentVariant) => currentVariant === "login" ? "register": "login")
-  },[])
+  }
 
   return(
     <>
