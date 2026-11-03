@@ -4,12 +4,24 @@
   "target": "mongo",
   "profileHash": "251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3",
   "roots": {
-    "posts": {
-      "model": "Post",
+    "Movie": {
+      "model": "Movie",
+      "namespace": "__unbound__"
+    },
+    "accounts": {
+      "model": "Account",
+      "namespace": "__unbound__"
+    },
+    "sessions": {
+      "model": "Session",
       "namespace": "__unbound__"
     },
     "users": {
       "model": "User",
+      "namespace": "__unbound__"
+    },
+    "verification_tokens": {
+      "model": "VerificationToken",
       "namespace": "__unbound__"
     }
   },
@@ -17,19 +29,19 @@
     "namespaces": {
       "__unbound__": {
         "models": {
-          "Post": {
+          "Account": {
             "fields": {
-              "authorId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "mongo/objectId@1",
-                  "kind": "scalar"
-                }
-              },
-              "content": {
+              "access_token": {
                 "nullable": true,
                 "type": {
                   "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "expires_at": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/int64Number@1",
                   "kind": "scalar"
                 }
               },
@@ -40,21 +52,77 @@
                   "kind": "scalar"
                 }
               },
-              "title": {
+              "id_token": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "provider": {
                 "nullable": false,
                 "type": {
                   "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
+              },
+              "providerAccountId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "refresh_token": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "scope": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "session_state": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "token_type": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "type": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
-              "author": {
+              "user": {
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
                   "localFields": [
-                    "authorId"
+                    "userId"
                   ],
                   "targetFields": [
                     "id"
@@ -67,26 +135,64 @@
               }
             },
             "storage": {
-              "collection": "posts",
+              "collection": "accounts",
               "fields": {
-                "authorId": {
-                  "field": "authorId"
+                "access_token": {
+                  "field": "access_token"
                 },
-                "content": {
-                  "field": "content"
+                "expires_at": {
+                  "field": "expires_at"
                 },
                 "id": {
                   "field": "_id"
                 },
-                "title": {
-                  "field": "title"
+                "id_token": {
+                  "field": "id_token"
+                },
+                "provider": {
+                  "field": "provider"
+                },
+                "providerAccountId": {
+                  "field": "providerAccountId"
+                },
+                "refresh_token": {
+                  "field": "refresh_token"
+                },
+                "scope": {
+                  "field": "scope"
+                },
+                "session_state": {
+                  "field": "session_state"
+                },
+                "token_type": {
+                  "field": "token_type"
+                },
+                "type": {
+                  "field": "type"
+                },
+                "userId": {
+                  "field": "userId"
                 }
               }
             }
           },
-          "User": {
+          "Movie": {
             "fields": {
-              "email": {
+              "description": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "duration": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "genre": {
                 "nullable": false,
                 "type": {
                   "codecId": "mongo/string@1",
@@ -100,34 +206,220 @@
                   "kind": "scalar"
                 }
               },
-              "name": {
-                "nullable": true,
+              "thumbnailUrl": {
+                "nullable": false,
                 "type": {
                   "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
               },
-              "username": {
-                "nullable": true,
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "videoUrl": {
+                "nullable": false,
                 "type": {
                   "codecId": "mongo/string@1",
                   "kind": "scalar"
                 }
               }
             },
+            "relations": {},
+            "storage": {
+              "collection": "Movie",
+              "fields": {
+                "description": {
+                  "field": "description"
+                },
+                "duration": {
+                  "field": "duration"
+                },
+                "genre": {
+                  "field": "genre"
+                },
+                "id": {
+                  "field": "_id"
+                },
+                "thumbnailUrl": {
+                  "field": "thumbnailUrl"
+                },
+                "title": {
+                  "field": "title"
+                },
+                "videoUrl": {
+                  "field": "videoUrl"
+                }
+              }
+            }
+          },
+          "Session": {
+            "fields": {
+              "expires": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "sessionToken": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              }
+            },
             "relations": {
-              "posts": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "collection": "sessions",
+              "fields": {
+                "expires": {
+                  "field": "expires"
+                },
+                "id": {
+                  "field": "_id"
+                },
+                "sessionToken": {
+                  "field": "sessionToken"
+                },
+                "userId": {
+                  "field": "userId"
+                }
+              }
+            }
+          },
+          "User": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "email": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "emailVerified": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "favoriteIds": {
+                "many": {
+                  "elementNullable": false
+                },
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "hashedPassword": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "image": {
+                "nullable": true,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "accounts": {
                 "cardinality": "1:N",
                 "on": {
                   "localFields": [
                     "id"
                   ],
                   "targetFields": [
-                    "authorId"
+                    "userId"
                   ]
                 },
                 "to": {
-                  "model": "Post",
+                  "model": "Account",
+                  "namespace": "__unbound__"
+                }
+              },
+              "sessions": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Session",
                   "namespace": "__unbound__"
                 }
               }
@@ -135,17 +427,82 @@
             "storage": {
               "collection": "users",
               "fields": {
+                "createdAt": {
+                  "field": "createdAt"
+                },
                 "email": {
                   "field": "email"
+                },
+                "emailVerified": {
+                  "field": "emailVerified"
+                },
+                "favoriteIds": {
+                  "field": "favoriteIds"
+                },
+                "hashedPassword": {
+                  "field": "hashedPassword"
                 },
                 "id": {
                   "field": "_id"
                 },
+                "image": {
+                  "field": "image"
+                },
                 "name": {
                   "field": "name"
                 },
-                "username": {
-                  "field": "username"
+                "updatedAt": {
+                  "field": "updatedAt"
+                }
+              }
+            }
+          },
+          "VerificationToken": {
+            "fields": {
+              "expires": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/objectId@1",
+                  "kind": "scalar"
+                }
+              },
+              "identifier": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "token": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "collection": "verification_tokens",
+              "fields": {
+                "expires": {
+                  "field": "expires"
+                },
+                "id": {
+                  "field": "_id"
+                },
+                "identifier": {
+                  "field": "identifier"
+                },
+                "token": {
+                  "field": "token"
                 }
               }
             }
@@ -159,7 +516,7 @@
       "__unbound__": {
         "entries": {
           "collection": {
-            "posts": {
+            "Movie": {
               "kind": "mongo-collection",
               "validator": {
                 "jsonSchema": {
@@ -169,23 +526,171 @@
                     "_id": {
                       "bsonType": "objectId"
                     },
-                    "authorId": {
-                      "bsonType": "objectId"
+                    "description": {
+                      "bsonType": "string"
                     },
-                    "content": {
-                      "bsonType": [
-                        "null",
-                        "string"
-                      ]
+                    "duration": {
+                      "bsonType": "string"
+                    },
+                    "genre": {
+                      "bsonType": "string"
+                    },
+                    "thumbnailUrl": {
+                      "bsonType": "string"
                     },
                     "title": {
+                      "bsonType": "string"
+                    },
+                    "videoUrl": {
                       "bsonType": "string"
                     }
                   },
                   "required": [
                     "_id",
-                    "authorId",
-                    "title"
+                    "description",
+                    "duration",
+                    "genre",
+                    "thumbnailUrl",
+                    "title",
+                    "videoUrl"
+                  ]
+                },
+                "kind": "mongo-validator",
+                "validationAction": "error",
+                "validationLevel": "strict"
+              }
+            },
+            "accounts": {
+              "indexes": [
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "provider"
+                    },
+                    {
+                      "direction": 1,
+                      "field": "providerAccountId"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "unique": true
+                }
+              ],
+              "kind": "mongo-collection",
+              "validator": {
+                "jsonSchema": {
+                  "additionalProperties": false,
+                  "bsonType": "object",
+                  "properties": {
+                    "_id": {
+                      "bsonType": "objectId"
+                    },
+                    "access_token": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "expires_at": {
+                      "bsonType": [
+                        "null",
+                        "long"
+                      ]
+                    },
+                    "id_token": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "provider": {
+                      "bsonType": "string"
+                    },
+                    "providerAccountId": {
+                      "bsonType": "string"
+                    },
+                    "refresh_token": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "scope": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "session_state": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "token_type": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "type": {
+                      "bsonType": "string"
+                    },
+                    "userId": {
+                      "bsonType": "objectId"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "provider",
+                    "providerAccountId",
+                    "type",
+                    "userId"
+                  ]
+                },
+                "kind": "mongo-validator",
+                "validationAction": "error",
+                "validationLevel": "strict"
+              }
+            },
+            "sessions": {
+              "indexes": [
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "sessionToken"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "unique": true
+                }
+              ],
+              "kind": "mongo-collection",
+              "validator": {
+                "jsonSchema": {
+                  "additionalProperties": false,
+                  "bsonType": "object",
+                  "properties": {
+                    "_id": {
+                      "bsonType": "objectId"
+                    },
+                    "expires": {
+                      "bsonType": "date"
+                    },
+                    "sessionToken": {
+                      "bsonType": "string"
+                    },
+                    "userId": {
+                      "bsonType": "objectId"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "expires",
+                    "sessionToken",
+                    "userId"
                   ]
                 },
                 "kind": "mongo-validator",
@@ -215,25 +720,110 @@
                     "_id": {
                       "bsonType": "objectId"
                     },
+                    "createdAt": {
+                      "bsonType": "date"
+                    },
                     "email": {
-                      "bsonType": "string"
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "emailVerified": {
+                      "bsonType": [
+                        "null",
+                        "date"
+                      ]
+                    },
+                    "favoriteIds": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "objectId"
+                      }
+                    },
+                    "hashedPassword": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    "image": {
+                      "bsonType": [
+                        "null",
+                        "string"
+                      ]
                     },
                     "name": {
-                      "bsonType": [
-                        "null",
-                        "string"
-                      ]
+                      "bsonType": "string"
                     },
-                    "username": {
-                      "bsonType": [
-                        "null",
-                        "string"
-                      ]
+                    "updatedAt": {
+                      "bsonType": "date"
                     }
                   },
                   "required": [
                     "_id",
-                    "email"
+                    "createdAt",
+                    "favoriteIds",
+                    "name",
+                    "updatedAt"
+                  ]
+                },
+                "kind": "mongo-validator",
+                "validationAction": "error",
+                "validationLevel": "strict"
+              }
+            },
+            "verification_tokens": {
+              "indexes": [
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "token"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "unique": true
+                },
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "identifier"
+                    },
+                    {
+                      "direction": 1,
+                      "field": "token"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "unique": true
+                }
+              ],
+              "kind": "mongo-collection",
+              "validator": {
+                "jsonSchema": {
+                  "additionalProperties": false,
+                  "bsonType": "object",
+                  "properties": {
+                    "_id": {
+                      "bsonType": "objectId"
+                    },
+                    "expires": {
+                      "bsonType": "date"
+                    },
+                    "identifier": {
+                      "bsonType": "string"
+                    },
+                    "token": {
+                      "bsonType": "string"
+                    }
+                  },
+                  "required": [
+                    "_id",
+                    "expires",
+                    "identifier",
+                    "token"
                   ]
                 },
                 "kind": "mongo-validator",
@@ -247,7 +837,40 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "1b32cdae5987d45006e4c8a26db4f87732e4c164ea47402253364582b1818b73"
+    "storageHash": "7b99637a742eaa40b9f44031b20b139a511065c48f3990f8db411cf40d684d9a"
+  },
+  "execution": {
+    "executionHash": "de2b27ed1b7b8cacec9b3446e8352ac560fc4b0d341145ab057e6425733d14ca",
+    "mutations": {
+      "defaults": [
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "users",
+            "field": "createdAt",
+            "namespace": "__unbound__"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "users",
+            "field": "updatedAt",
+            "namespace": "__unbound__"
+          }
+        }
+      ]
+    }
   },
   "capabilities": {},
   "extensions": {},

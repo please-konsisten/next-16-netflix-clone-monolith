@@ -22,8 +22,9 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1b32cdae5987d45006e4c8a26db4f87732e4c164ea47402253364582b1818b73'>;
-export type ExecutionHash = ExecutionHashBase<string>;
+  StorageHashBase<'7b99637a742eaa40b9f44031b20b139a511065c48f3990f8db411cf40d684d9a'>;
+export type ExecutionHash =
+  ExecutionHashBase<'de2b27ed1b7b8cacec9b3446e8352ac560fc4b0d341145ab057e6425733d14ca'>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
 
@@ -48,28 +49,70 @@ export type FieldInputTypes = FieldTypesFromDomain<
 >;
 
 export namespace Models {
-  export type unbound_Post = {
-    authorId: FieldOutputTypes['__unbound__']['Post']['authorId'];
-    content: FieldOutputTypes['__unbound__']['Post']['content'];
-    id: FieldOutputTypes['__unbound__']['Post']['id'];
-    title: FieldOutputTypes['__unbound__']['Post']['title'];
-    author: unbound_User;
-    readonly [RelationKeys]?: 'author';
+  export type unbound_Account = {
+    access_token: FieldOutputTypes['__unbound__']['Account']['access_token'];
+    expires_at: FieldOutputTypes['__unbound__']['Account']['expires_at'];
+    id: FieldOutputTypes['__unbound__']['Account']['id'];
+    id_token: FieldOutputTypes['__unbound__']['Account']['id_token'];
+    provider: FieldOutputTypes['__unbound__']['Account']['provider'];
+    providerAccountId: FieldOutputTypes['__unbound__']['Account']['providerAccountId'];
+    refresh_token: FieldOutputTypes['__unbound__']['Account']['refresh_token'];
+    scope: FieldOutputTypes['__unbound__']['Account']['scope'];
+    session_state: FieldOutputTypes['__unbound__']['Account']['session_state'];
+    token_type: FieldOutputTypes['__unbound__']['Account']['token_type'];
+    type: FieldOutputTypes['__unbound__']['Account']['type'];
+    userId: FieldOutputTypes['__unbound__']['Account']['userId'];
+    user: unbound_User;
+    readonly [RelationKeys]?: 'user';
+  };
+  export type unbound_Movie = {
+    description: FieldOutputTypes['__unbound__']['Movie']['description'];
+    duration: FieldOutputTypes['__unbound__']['Movie']['duration'];
+    genre: FieldOutputTypes['__unbound__']['Movie']['genre'];
+    id: FieldOutputTypes['__unbound__']['Movie']['id'];
+    thumbnailUrl: FieldOutputTypes['__unbound__']['Movie']['thumbnailUrl'];
+    title: FieldOutputTypes['__unbound__']['Movie']['title'];
+    videoUrl: FieldOutputTypes['__unbound__']['Movie']['videoUrl'];
+    readonly [RelationKeys]?: never;
+  };
+  export type unbound_Session = {
+    expires: FieldOutputTypes['__unbound__']['Session']['expires'];
+    id: FieldOutputTypes['__unbound__']['Session']['id'];
+    sessionToken: FieldOutputTypes['__unbound__']['Session']['sessionToken'];
+    userId: FieldOutputTypes['__unbound__']['Session']['userId'];
+    user: unbound_User;
+    readonly [RelationKeys]?: 'user';
   };
   export type unbound_User = {
+    createdAt: FieldOutputTypes['__unbound__']['User']['createdAt'];
     email: FieldOutputTypes['__unbound__']['User']['email'];
+    emailVerified: FieldOutputTypes['__unbound__']['User']['emailVerified'];
+    favoriteIds: FieldOutputTypes['__unbound__']['User']['favoriteIds'];
+    hashedPassword: FieldOutputTypes['__unbound__']['User']['hashedPassword'];
     id: FieldOutputTypes['__unbound__']['User']['id'];
+    image: FieldOutputTypes['__unbound__']['User']['image'];
     name: FieldOutputTypes['__unbound__']['User']['name'];
-    username: FieldOutputTypes['__unbound__']['User']['username'];
-    posts: unbound_Post[];
-    readonly [RelationKeys]?: 'posts';
+    updatedAt: FieldOutputTypes['__unbound__']['User']['updatedAt'];
+    accounts: unbound_Account[];
+    sessions: unbound_Session[];
+    readonly [RelationKeys]?: 'accounts' | 'sessions';
+  };
+  export type unbound_VerificationToken = {
+    expires: FieldOutputTypes['__unbound__']['VerificationToken']['expires'];
+    id: FieldOutputTypes['__unbound__']['VerificationToken']['id'];
+    identifier: FieldOutputTypes['__unbound__']['VerificationToken']['identifier'];
+    token: FieldOutputTypes['__unbound__']['VerificationToken']['token'];
+    readonly [RelationKeys]?: never;
   };
 }
 
 export declare const models: {
   __unbound__: {
-    Post: Models.unbound_Post;
+    Account: Models.unbound_Account;
+    Movie: Models.unbound_Movie;
+    Session: Models.unbound_Session;
     User: Models.unbound_User;
+    VerificationToken: Models.unbound_VerificationToken;
   };
 };
 
@@ -83,7 +126,17 @@ type ContractBase = Omit<
         readonly kind: 'mongo-database';
         readonly entries: {
           readonly collection: {
-            readonly posts: {
+            readonly accounts: {
+              readonly indexes: readonly [
+                {
+                  readonly keys: readonly [
+                    { readonly direction: 1; readonly field: 'provider' },
+                    { readonly direction: 1; readonly field: 'providerAccountId' },
+                  ];
+                  readonly kind: 'mongo-index';
+                  readonly unique: true;
+                },
+              ];
               readonly kind: 'mongo-collection';
               readonly validator: {
                 readonly jsonSchema: {
@@ -91,11 +144,83 @@ type ContractBase = Omit<
                   readonly bsonType: 'object';
                   readonly properties: {
                     readonly _id: { readonly bsonType: 'objectId' };
-                    readonly authorId: { readonly bsonType: 'objectId' };
-                    readonly content: { readonly bsonType: readonly ['null', 'string'] };
-                    readonly title: { readonly bsonType: 'string' };
+                    readonly access_token: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly expires_at: { readonly bsonType: readonly ['null', 'long'] };
+                    readonly id_token: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly provider: { readonly bsonType: 'string' };
+                    readonly providerAccountId: { readonly bsonType: 'string' };
+                    readonly refresh_token: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly scope: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly session_state: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly token_type: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly type: { readonly bsonType: 'string' };
+                    readonly userId: { readonly bsonType: 'objectId' };
                   };
-                  readonly required: readonly ['_id', 'authorId', 'title'];
+                  readonly required: readonly [
+                    '_id',
+                    'provider',
+                    'providerAccountId',
+                    'type',
+                    'userId',
+                  ];
+                };
+                readonly kind: 'mongo-validator';
+                readonly validationAction: 'error';
+                readonly validationLevel: 'strict';
+              };
+            };
+            readonly Movie: {
+              readonly kind: 'mongo-collection';
+              readonly validator: {
+                readonly jsonSchema: {
+                  readonly additionalProperties: false;
+                  readonly bsonType: 'object';
+                  readonly properties: {
+                    readonly _id: { readonly bsonType: 'objectId' };
+                    readonly description: { readonly bsonType: 'string' };
+                    readonly duration: { readonly bsonType: 'string' };
+                    readonly genre: { readonly bsonType: 'string' };
+                    readonly thumbnailUrl: { readonly bsonType: 'string' };
+                    readonly title: { readonly bsonType: 'string' };
+                    readonly videoUrl: { readonly bsonType: 'string' };
+                  };
+                  readonly required: readonly [
+                    '_id',
+                    'description',
+                    'duration',
+                    'genre',
+                    'thumbnailUrl',
+                    'title',
+                    'videoUrl',
+                  ];
+                };
+                readonly kind: 'mongo-validator';
+                readonly validationAction: 'error';
+                readonly validationLevel: 'strict';
+              };
+            };
+            readonly sessions: {
+              readonly indexes: readonly [
+                {
+                  readonly keys: readonly [
+                    { readonly direction: 1; readonly field: 'sessionToken' },
+                  ];
+                  readonly kind: 'mongo-index';
+                  readonly unique: true;
+                },
+              ];
+              readonly kind: 'mongo-collection';
+              readonly validator: {
+                readonly jsonSchema: {
+                  readonly additionalProperties: false;
+                  readonly bsonType: 'object';
+                  readonly properties: {
+                    readonly _id: { readonly bsonType: 'objectId' };
+                    readonly expires: { readonly bsonType: 'date' };
+                    readonly sessionToken: { readonly bsonType: 'string' };
+                    readonly userId: { readonly bsonType: 'objectId' };
+                  };
+                  readonly required: readonly ['_id', 'expires', 'sessionToken', 'userId'];
                 };
                 readonly kind: 'mongo-validator';
                 readonly validationAction: 'error';
@@ -117,11 +242,59 @@ type ContractBase = Omit<
                   readonly bsonType: 'object';
                   readonly properties: {
                     readonly _id: { readonly bsonType: 'objectId' };
-                    readonly email: { readonly bsonType: 'string' };
-                    readonly name: { readonly bsonType: readonly ['null', 'string'] };
-                    readonly username: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly createdAt: { readonly bsonType: 'date' };
+                    readonly email: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly emailVerified: { readonly bsonType: readonly ['null', 'date'] };
+                    readonly favoriteIds: {
+                      readonly bsonType: 'array';
+                      readonly items: { readonly bsonType: 'objectId' };
+                    };
+                    readonly hashedPassword: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly image: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly name: { readonly bsonType: 'string' };
+                    readonly updatedAt: { readonly bsonType: 'date' };
                   };
-                  readonly required: readonly ['_id', 'email'];
+                  readonly required: readonly [
+                    '_id',
+                    'createdAt',
+                    'favoriteIds',
+                    'name',
+                    'updatedAt',
+                  ];
+                };
+                readonly kind: 'mongo-validator';
+                readonly validationAction: 'error';
+                readonly validationLevel: 'strict';
+              };
+            };
+            readonly verification_tokens: {
+              readonly indexes: readonly [
+                {
+                  readonly keys: readonly [{ readonly direction: 1; readonly field: 'token' }];
+                  readonly kind: 'mongo-index';
+                  readonly unique: true;
+                },
+                {
+                  readonly keys: readonly [
+                    { readonly direction: 1; readonly field: 'identifier' },
+                    { readonly direction: 1; readonly field: 'token' },
+                  ];
+                  readonly kind: 'mongo-index';
+                  readonly unique: true;
+                },
+              ];
+              readonly kind: 'mongo-collection';
+              readonly validator: {
+                readonly jsonSchema: {
+                  readonly additionalProperties: false;
+                  readonly bsonType: 'object';
+                  readonly properties: {
+                    readonly _id: { readonly bsonType: 'objectId' };
+                    readonly expires: { readonly bsonType: 'date' };
+                    readonly identifier: { readonly bsonType: 'string' };
+                    readonly token: { readonly bsonType: 'string' };
+                  };
+                  readonly required: readonly ['_id', 'expires', 'identifier', 'token'];
                 };
                 readonly kind: 'mongo-validator';
                 readonly validationAction: 'error';
@@ -139,34 +312,78 @@ type ContractBase = Omit<
   readonly target: 'mongo';
   readonly targetFamily: 'mongo';
   readonly roots: {
-    readonly posts: { readonly namespace: '__unbound__' & NamespaceId; readonly model: 'Post' };
+    readonly Movie: { readonly namespace: '__unbound__' & NamespaceId; readonly model: 'Movie' };
+    readonly accounts: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'Account';
+    };
+    readonly sessions: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'Session';
+    };
     readonly users: { readonly namespace: '__unbound__' & NamespaceId; readonly model: 'User' };
+    readonly verification_tokens: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'VerificationToken';
+    };
   };
   readonly domain: {
     readonly namespaces: {
       readonly __unbound__: {
         readonly models: {
-          readonly Post: {
+          readonly Account: {
             readonly fields: {
-              readonly authorId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
-              };
-              readonly content: {
+              readonly access_token: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly expires_at: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/int64Number@1' };
               };
               readonly id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
               };
-              readonly title: {
+              readonly id_token: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly provider: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
+              readonly providerAccountId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly refresh_token: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly scope: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly session_state: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly token_type: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
             };
             readonly relations: {
-              readonly author: {
+              readonly user: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;
                   readonly model: 'User';
@@ -174,24 +391,40 @@ type ContractBase = Omit<
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['authorId'];
+                  readonly localFields: readonly ['userId'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly collection: 'posts';
+              readonly collection: 'accounts';
               readonly fields: {
-                readonly authorId: { readonly field: 'authorId' };
-                readonly content: { readonly field: 'content' };
+                readonly access_token: { readonly field: 'access_token' };
+                readonly expires_at: { readonly field: 'expires_at' };
                 readonly id: { readonly field: '_id' };
-                readonly title: { readonly field: 'title' };
+                readonly id_token: { readonly field: 'id_token' };
+                readonly provider: { readonly field: 'provider' };
+                readonly providerAccountId: { readonly field: 'providerAccountId' };
+                readonly refresh_token: { readonly field: 'refresh_token' };
+                readonly scope: { readonly field: 'scope' };
+                readonly session_state: { readonly field: 'session_state' };
+                readonly token_type: { readonly field: 'token_type' };
+                readonly type: { readonly field: 'type' };
+                readonly userId: { readonly field: 'userId' };
               };
             };
           };
-          readonly User: {
+          readonly Movie: {
             readonly fields: {
-              readonly email: {
+              readonly description: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly duration: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly genre: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
@@ -199,35 +432,182 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
               };
-              readonly name: {
-                readonly nullable: true;
+              readonly thumbnailUrl: {
+                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
-              readonly username: {
-                readonly nullable: true;
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly videoUrl: {
+                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
               };
             };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly collection: 'Movie';
+              readonly fields: {
+                readonly description: { readonly field: 'description' };
+                readonly duration: { readonly field: 'duration' };
+                readonly genre: { readonly field: 'genre' };
+                readonly id: { readonly field: '_id' };
+                readonly thumbnailUrl: { readonly field: 'thumbnailUrl' };
+                readonly title: { readonly field: 'title' };
+                readonly videoUrl: { readonly field: 'videoUrl' };
+              };
+            };
+          };
+          readonly Session: {
+            readonly fields: {
+              readonly expires: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly sessionToken: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+            };
             readonly relations: {
-              readonly posts: {
+              readonly user: {
                 readonly to: {
                   readonly namespace: '__unbound__' & NamespaceId;
-                  readonly model: 'Post';
+                  readonly model: 'User';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly collection: 'sessions';
+              readonly fields: {
+                readonly expires: { readonly field: 'expires' };
+                readonly id: { readonly field: '_id' };
+                readonly sessionToken: { readonly field: 'sessionToken' };
+                readonly userId: { readonly field: 'userId' };
+              };
+            };
+          };
+          readonly User: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly email: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly emailVerified: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly favoriteIds: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+                readonly many: { readonly elementNullable: false };
+              };
+              readonly hashedPassword: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly image: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+            };
+            readonly relations: {
+              readonly accounts: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'Account';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
                   readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['authorId'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly sessions: {
+                readonly to: {
+                  readonly namespace: '__unbound__' & NamespaceId;
+                  readonly model: 'Session';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
                 };
               };
             };
             readonly storage: {
               readonly collection: 'users';
               readonly fields: {
+                readonly createdAt: { readonly field: 'createdAt' };
                 readonly email: { readonly field: 'email' };
+                readonly emailVerified: { readonly field: 'emailVerified' };
+                readonly favoriteIds: { readonly field: 'favoriteIds' };
+                readonly hashedPassword: { readonly field: 'hashedPassword' };
                 readonly id: { readonly field: '_id' };
+                readonly image: { readonly field: 'image' };
                 readonly name: { readonly field: 'name' };
-                readonly username: { readonly field: 'username' };
+                readonly updatedAt: { readonly field: 'updatedAt' };
+              };
+            };
+          };
+          readonly VerificationToken: {
+            readonly fields: {
+              readonly expires: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/date@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly identifier: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly token: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly collection: 'verification_tokens';
+              readonly fields: {
+                readonly expires: { readonly field: 'expires' };
+                readonly id: { readonly field: '_id' };
+                readonly identifier: { readonly field: 'identifier' };
+                readonly token: { readonly field: 'token' };
               };
             };
           };
@@ -237,6 +617,30 @@ type ContractBase = Omit<
   };
   readonly capabilities: {};
   readonly extensions: {};
+  readonly execution: {
+    readonly executionHash: ExecutionHash;
+    readonly mutations: {
+      readonly defaults: readonly [
+        {
+          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'users';
+            readonly field: 'createdAt';
+            readonly namespace: '__unbound__';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'users';
+            readonly field: 'updatedAt';
+            readonly namespace: '__unbound__';
+          };
+        },
+      ];
+    };
+  };
   readonly meta: {};
 
   readonly profileHash: ProfileHash;
