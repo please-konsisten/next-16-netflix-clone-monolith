@@ -1,0 +1,86 @@
+// use prisma-8
+
+// model User {
+//   id       ObjectId @id @map("_id")
+//   email    String   @unique
+//   username String?
+//   name     String?
+//   posts    Post[]
+//   @@map("users")
+// }
+
+// model Post {
+//   id       ObjectId @id @map("_id")
+//   title    String
+//   content  String?
+//   author   User     @relation(fields: [authorId], references: [id])
+//   authorId ObjectId
+//   @@map("posts")
+// }
+model User {
+  id             ObjectId           @id @map("_id")
+  name           String
+  image          String?
+  email          String?            @unique
+  emailVerified  Date?
+  hashedPassword String?
+  createdAt      temporal.CreatedAt
+  updatedAt      temporal.UpdatedAt
+  favoriteIds    ObjectId[]
+
+  sessions       Session[]
+  accounts       Account[]
+
+  @@map("users")
+}
+
+model Account {
+  id                ObjectId     @id @map("_id")
+  userId            ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int64Number?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user              User         @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           ObjectId @id @map("_id")
+  sessionToken String   @unique
+  userId       ObjectId
+  expires      Date
+
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         ObjectId @id @map("_id")
+  identifier String
+  token      String   @unique
+  expires    Date
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Movie {
+  id           ObjectId @id @map("_id")
+  title        String
+  description  String
+  videoUrl     String
+  thumbnailUrl String
+  genre        String
+  duration     String
+}

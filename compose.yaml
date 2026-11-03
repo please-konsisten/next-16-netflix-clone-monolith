@@ -10,3 +10,23 @@ services:
       - 3000:3000
     volumes:
       - .:/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8
+    container_name: next-16-netflix-clone-mongodb-dev
+    restart: always
+    command: ["mongod", "--replSet", "rs0", "--keyFile", "/data/configdb/mongo-keyfile", "--bind_ip_all"]
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=1
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data_dev:/data/db
+      - ./mongo-keyfile:/data/configdb/mongo-keyfile
+
+volumes:
+  mongo_data_dev:
